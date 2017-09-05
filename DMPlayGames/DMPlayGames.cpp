@@ -60,8 +60,11 @@ namespace DMPlayGames
 
 	void Plugin::OnReceivedDanmaku(Object^ sender, ReceivedDanmakuArgs^ e)
 	{
-		g_pluginNative.OnReceivedDanmaku(marshal_as<wstring>(e->Danmaku->CommentText), 
-			marshal_as<wstring>(e->Danmaku->CommentUser));
+		if (e->Danmaku->MsgType == MsgTypeEnum::Comment)
+		{
+			g_pluginNative.OnReceivedDanmaku(marshal_as<wstring>(e->Danmaku->CommentText),
+				marshal_as<wstring>(e->Danmaku->CommentUser));
+		}
 	}
 
 
@@ -200,7 +203,7 @@ namespace DMPlayGames
 				break;
 
 			case VOTING: // 投票
-				constexpr int voteTime = 15; // 投票时间，秒
+				constexpr int voteTime = 20; // 投票时间，秒
 				if (GetTickCount() - m_voteStartTime > voteTime * 1000)
 				{
 					StopVoting();
