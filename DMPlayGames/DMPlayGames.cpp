@@ -265,7 +265,7 @@ namespace DMPlayGames
 	// 选择投票最多的选项
 	void PluginNative::ChooseOption()
 	{
-		int index = int(max_element(m_voteCount.cbegin(), m_voteCount.cend()) - m_voteCount.cbegin()) - 1;
+		int index = int(max_element(m_voteCount.cbegin(), m_voteCount.cend()) - m_voteCount.cbegin());
 
 		// 计算选项位置
 		RECT rect;
