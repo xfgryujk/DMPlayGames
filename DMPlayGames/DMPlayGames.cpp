@@ -254,15 +254,20 @@ namespace DMPlayGames
 	{
 		// 游戏状态：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1D00]
 		// 选项数：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1F14]
+		// 第一个选项Y坐标：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1F94]
 		DWORD base;
 		if (!ReadProcessMemory(m_gameProcess.get() , LPCVOID(m_scriptModuleBase + 0x4A71B0), &(base = 0), 4, NULL))
-			return false;
-		if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1F14), &(m_optionsCount = 0), 1, NULL))
 			return false;
 		DWORD gameStatus;
 		if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1D00), &(gameStatus = 0), 1, NULL))
 			return false;
-		return gameStatus == 2;
+		if (gameStatus != 2) // 有选项
+			return false;
+		if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1F14), &(m_optionsCount = 0), 1, NULL))
+			return false;
+		if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1F94), &(m_firstOptionTop = 0), 1, NULL))
+			return false;
+		return true;
 	}
 
 	// 选择投票最多的选项
@@ -273,7 +278,8 @@ namespace DMPlayGames
 		// 计算选项位置
 		RECT rect;
 		GetClientRect(m_gameWindow, &rect);
-		POINTS pos = { rect.right / 2, rect.bottom * 0.31 + index * rect.bottom * 0.11 };
+		// 要考虑DPI缩放，偷懒直接硬编码了
+		POINTS pos = { rect.right / 2, m_firstOptionTop / 0.8 + 20 + index * 100 };
 
 		SendMessage(m_gameWindow, WM_MOUSEMOVE, 0, *(DWORD*)&pos);
 		Sleep(100);
