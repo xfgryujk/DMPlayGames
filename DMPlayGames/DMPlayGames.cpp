@@ -274,7 +274,7 @@ namespace DMPlayGames
 
 		// 第1个选项Y坐标为186，但第4个选项Y坐标为108
 		// 要考虑DPI缩放，偷懒直接硬编码了
-		POINTS pos = { 1280 / 0.8 / 2, (m_optionsCount > 3 ? 186 : 108) / 0.8 + 20 + index * 100 };
+		POINTS pos = { 1280 / 0.8 / 2, (m_optionsCount > 3 ? 108 : 186) / 0.8 + 20 + index * 100 };
 		
 		SendMessage(m_gameWindow, WM_MOUSEMOVE, 0, *(DWORD*)&pos);
 		Sleep(100);
