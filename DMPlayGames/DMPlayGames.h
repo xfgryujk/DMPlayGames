@@ -80,7 +80,6 @@ namespace DMPlayGames
 		std::set<std::wstring> m_votedUsers;
 		int m_optionsCount = 0;
 		std::vector<int> m_voteCount;
-		int m_firstOptionTop = 0;
 	};
 
 	extern PluginNative g_pluginNative;

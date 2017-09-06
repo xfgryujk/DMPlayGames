@@ -254,7 +254,6 @@ namespace DMPlayGames
 	{
 		// 游戏状态：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1D00]
 		// 选项数：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1F14]
-		// 第一个选项Y坐标：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1F94]
 		DWORD base;
 		if (!ReadProcessMemory(m_gameProcess.get() , LPCVOID(m_scriptModuleBase + 0x4A71B0), &(base = 0), 4, NULL))
 			return false;
@@ -265,8 +264,6 @@ namespace DMPlayGames
 			return false;
 		if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1F14), &(m_optionsCount = 0), 1, NULL))
 			return false;
-		if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1F94), &(m_firstOptionTop = 0), 1, NULL))
-			return false;
 		return true;
 	}
 
@@ -275,12 +272,10 @@ namespace DMPlayGames
 	{
 		int index = int(max_element(m_voteCount.cbegin(), m_voteCount.cend()) - m_voteCount.cbegin());
 
-		// 计算选项位置
-		RECT rect;
-		GetClientRect(m_gameWindow, &rect);
+		// 第1个选项Y坐标为186，但第4个选项Y坐标为108
 		// 要考虑DPI缩放，偷懒直接硬编码了
-		POINTS pos = { rect.right / 2, m_firstOptionTop / 0.8 + 20 + index * 100 };
-
+		POINTS pos = { 1280 / 0.8 / 2, (m_optionsCount > 3 ? 186 : 108) / 0.8 + 20 + index * 100 };
+		
 		SendMessage(m_gameWindow, WM_MOUSEMOVE, 0, *(DWORD*)&pos);
 		Sleep(100);
 		SendMessage(m_gameWindow, WM_LBUTTONDOWN, MK_LBUTTON, *(DWORD*)&pos);
