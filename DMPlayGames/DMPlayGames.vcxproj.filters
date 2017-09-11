@@ -21,6 +21,15 @@
     <ClInclude Include="Stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PluginNative.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginFlowers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DMPlayGames.cpp">
@@ -30,6 +39,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginNative.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginFlowers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
