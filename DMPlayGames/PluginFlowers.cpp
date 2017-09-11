@@ -152,6 +152,8 @@ void PluginFlowers::ChooseOption(int index)
 
 // 春篇 /////////////////////////////////////////////////////////////////////
 
+REGISTER_PLUGIN(PluginFlowersSpring, "FLOWERS 春篇");
+
 bool PluginFlowersSpring::CheckIsChoosing()
 {
 	// 游戏状态：BYTE PTR [[Script.dll + 0x4A71B0] + 0x1D00]
@@ -171,6 +173,8 @@ bool PluginFlowersSpring::CheckIsChoosing()
 
 
 // 夏篇 /////////////////////////////////////////////////////////////////////
+
+REGISTER_PLUGIN(PluginFlowersSummer, "FLOWERS 夏篇");
 
 bool PluginFlowersSummer::CheckIsChoosing()
 {

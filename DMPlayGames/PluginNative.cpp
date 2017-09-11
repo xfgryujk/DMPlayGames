@@ -10,8 +10,7 @@
 using namespace std;
 
 
-shared_ptr<PluginNative> g_pluginNative;
-
+shared_ptr<PluginNative> g_pluginNative = make_shared<PluginNative>();
 
 PluginNative::PluginNative()
 {

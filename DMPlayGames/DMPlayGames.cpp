@@ -3,7 +3,6 @@
 #include "stdafx.h"
 #include "DMPlayGames.h"
 #include "PluginNative.h"
-#include "PluginFlowers.h" // 测试用
 
 #include <msclr\marshal_cppstd.h>
 
@@ -27,8 +26,7 @@ void PluginManaged::Inited()
 {
 	DMPlugin::Inited();
 
-	//g_pluginNative = make_shared<PluginNative>();
-	g_pluginNative = make_shared<PluginFlowersSummer>(); // 测试用
+	g_pluginNative = PluginNativeFactory::GetInstance().Create(L"FLOWERS 夏篇"); // 测试用
 }
 
 void PluginManaged::DeInit()
