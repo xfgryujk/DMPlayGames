@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="DMPlayGames.h" />
     <ClInclude Include="PluginFlowers.h" />
+    <ClInclude Include="PluginGBA.h" />
     <ClInclude Include="PluginNative.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="Util.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="DMPlayGames.cpp" />
     <ClCompile Include="PluginFlowers.cpp" />
+    <ClCompile Include="PluginGBA.cpp" />
     <ClCompile Include="PluginNative.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -46,4 +46,29 @@ void ClickByMessage(HWND hwnd, const POINTS& pos)
 	SendMessage(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, *(DWORD*)&pos);
 	Sleep(100);
 	SendMessage(hwnd, WM_LBUTTONUP, 0, *(DWORD*)&pos);
+	Sleep(100);
+}
+
+// 模拟按键，使用信息
+void PressKeyByMessage(HWND hwnd, UINT vk, DWORD holdTime)
+{
+	UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
+	SendMessage(hwnd, WM_KEYDOWN, vk, 1 | (scanCode << 16));
+	Sleep(holdTime);
+	SendMessage(hwnd, WM_KEYUP, vk, 1 | (scanCode << 16) | (1 << 30) | (1 << 31));
+	Sleep(100);
+}
+
+// 模拟按键，使用API
+void PressKeyByAPI(UINT vk, DWORD holdTime)
+{
+	INPUT input = {};
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = vk;
+	input.ki.wScan = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
+	SendInput(1, &input, sizeof(INPUT));
+	Sleep(holdTime);
+	input.ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(1, &input, sizeof(INPUT));
+	Sleep(100);
 }

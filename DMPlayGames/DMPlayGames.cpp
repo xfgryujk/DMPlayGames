@@ -26,7 +26,7 @@ void PluginManaged::Inited()
 {
 	DMPlugin::Inited();
 
-	g_pluginNative = PluginNativeFactory::GetInstance().Create(L"FLOWERS 夏篇"); // 测试用
+	g_pluginNative = PluginNativeFactory::GetInstance().Create(L"GBA"); // 测试用
 }
 
 void PluginManaged::DeInit()
