@@ -60,3 +60,9 @@ class PluginFlowersSummer final : public PluginFlowers
 protected:
 	virtual bool CheckIsChoosing();
 };
+
+class PluginFlowersAutumn final : public PluginFlowers
+{
+protected:
+	virtual bool CheckIsChoosing();
+};

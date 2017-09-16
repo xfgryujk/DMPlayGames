@@ -192,3 +192,25 @@ bool PluginFlowersSummer::CheckIsChoosing()
 		return false;
 	return true;
 }
+
+
+// 秋篇 /////////////////////////////////////////////////////////////////////
+
+REGISTER_PLUGIN(PluginFlowersAutumn, "FLOWERS 秋篇");
+
+bool PluginFlowersAutumn::CheckIsChoosing()
+{
+	// 游戏状态：BYTE PTR [[Script.dll + 0xA436F8] + 0x1B2C]
+	// 选项数：BYTE PTR [[Script.dll + 0xAA436F8] + 0x1D40]
+	DWORD base;
+	if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(m_scriptModuleBase + 0xA436F8), &(base = 0), 4, NULL))
+		return false;
+	DWORD gameStatus;
+	if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1B2C), &(gameStatus = 0), 1, NULL))
+		return false;
+	if (gameStatus != 2) // 有选项
+		return false;
+	if (!ReadProcessMemory(m_gameProcess.get(), LPCVOID(base + 0x1D40), &(m_optionsCount = 0), 1, NULL))
+		return false;
+	return true;
+}

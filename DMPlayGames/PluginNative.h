@@ -58,7 +58,11 @@ public:
 	public:
 		AddGenerator(const std::wstring& key)
 		{
-			PluginNativeFactory::GetInstance().m_generators.emplace(key, [] { return std::make_shared<T>(); });
+			auto& generators = PluginNativeFactory::GetInstance().m_generators;
+			if (generators.find(key) == generators.end())
+				generators.emplace(key, [] { return std::make_shared<T>(); });
+			else
+				throw std::invalid_argument("Duplicated key");
 		}
 	};
 };
