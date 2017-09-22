@@ -4,6 +4,12 @@
 #include "DMPlayGames.h"
 #include "PluginNative.h"
 
+#include <Shlobj.h>
+#include <Shlwapi.h>
+
+#include <locale>
+#include <fstream>
+
 #include <msclr\marshal_cppstd.h>
 
 using namespace BilibiliDM_PluginFramework;
@@ -26,7 +32,36 @@ void PluginManaged::Inited()
 {
 	DMPlugin::Inited();
 
-	g_pluginNative = PluginNativeFactory::GetInstance().Create(L"FLOWERS 秋篇"); // 测试用
+	locale::global(locale(""));
+
+	// 初始化配置目录
+	CONFIG_DIR.resize(MAX_PATH);
+	SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, &CONFIG_DIR.front());
+	CONFIG_DIR.resize(wcslen(CONFIG_DIR.c_str()));
+	CONFIG_DIR += L"\\弹幕姬\\Plugins\\弹幕玩游戏";
+	CreateDirectoryW(CONFIG_DIR.c_str(), NULL);
+
+	// 初始化配置
+	wstring configPath = CONFIG_DIR + L"\\配置.ini";
+	if (!PathFileExistsW(configPath.c_str()))
+	{
+		WritePrivateProfileStringW(L"DMPlayGames", L"GameName", L"", configPath.c_str());
+	}
+
+	// 输出支持的游戏
+	wofstream f(CONFIG_DIR + L"\\支持的游戏.txt");
+	if (f.is_open())
+	{
+		auto keys = PluginNativeFactory::GetInstance().GetKeys();
+		for (const auto& i : keys)
+			f << i << endl;
+	}
+
+	// 创建插件
+	wstring key(1024, L'\0');
+	GetPrivateProfileStringW(L"DMPlayGames", L"GameName", L"", &key.front(), (DWORD)key.size(), configPath.c_str());
+	key.resize(wcslen(key.c_str()));
+	g_pluginNative = PluginNativeFactory::GetInstance().Create(key);
 }
 
 void PluginManaged::DeInit()

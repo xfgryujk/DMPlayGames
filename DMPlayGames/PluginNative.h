@@ -3,6 +3,11 @@
 #include <memory>
 #include <map>
 #include <functional>
+#include <vector>
+
+
+// 插件使用的文件夹
+extern std::wstring CONFIG_DIR;
 
 
 // 本机的Plugin类，实现主要逻辑
@@ -19,10 +24,6 @@ public:
 protected:
 	// 输出文字到OBS
 	void OutputString(const std::wstring& str);
-
-
-	// 插件使用的文件夹
-	std::wstring CONFIG_DIR;
 };
 
 extern std::shared_ptr<PluginNative> g_pluginNative;
@@ -44,13 +45,9 @@ public:
 		return s_instance;
 	}
 
-	std::shared_ptr<PluginNative> Create(const std::wstring& key)
-	{
-		auto it = m_generators.find(key);
-		if (it == m_generators.end())
-			return std::make_shared<PluginNative>();
-		return it->second();
-	}
+	std::shared_ptr<PluginNative> Create(const std::wstring& key);
+	std::vector<std::wstring> GetKeys();
+
 
 	template<class T>
 	class AddGenerator

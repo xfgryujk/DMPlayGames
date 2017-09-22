@@ -1,8 +1,6 @@
 ﻿#include "stdafx.h"
 #include "PluginNative.h"
 
-#include <Shlobj.h>
-
 #include <locale>
 #include <codecvt>
 #include <fstream>
@@ -10,16 +8,13 @@
 using namespace std;
 
 
+wstring CONFIG_DIR;
+
+
 shared_ptr<PluginNative> g_pluginNative = make_shared<PluginNative>();
 
 PluginNative::PluginNative()
 {
-	CONFIG_DIR.resize(MAX_PATH);
-	SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, &CONFIG_DIR.front());
-	CONFIG_DIR.resize(wcslen(CONFIG_DIR.c_str()));
-	CONFIG_DIR += L"\\弹幕姬\\Plugins\\弹幕玩游戏";
-	CreateDirectoryW(CONFIG_DIR.c_str(), NULL);
-
 	OutputString(L"");
 }
 
@@ -48,4 +43,23 @@ void PluginNative::OutputString(const wstring& str)
 		return;
 	f.imbue(locale(locale(), new codecvt_utf8_utf16<wchar_t>));
 	f << str;
+}
+
+
+// PluginNativeFactory /////////////////////////////////////////////////////////////////////
+
+shared_ptr<PluginNative> PluginNativeFactory::Create(const std::wstring& key)
+{
+	auto it = m_generators.find(key);
+	if (it == m_generators.end())
+		return make_shared<PluginNative>();
+	return it->second();
+}
+
+vector<wstring> PluginNativeFactory::GetKeys()
+{
+	vector<wstring> keys;
+	for (const auto& i : m_generators)
+		keys.push_back(i.first);
+	return move(keys);
 }
