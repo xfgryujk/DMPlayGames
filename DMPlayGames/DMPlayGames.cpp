@@ -44,9 +44,7 @@ void PluginManaged::Inited()
 	// 初始化配置
 	wstring configPath = CONFIG_DIR + L"\\配置.ini";
 	if (!PathFileExistsW(configPath.c_str()))
-	{
 		WritePrivateProfileStringW(L"DMPlayGames", L"GameName", L"", configPath.c_str());
-	}
 
 	// 输出支持的游戏
 	wofstream f(CONFIG_DIR + L"\\支持的游戏.txt");

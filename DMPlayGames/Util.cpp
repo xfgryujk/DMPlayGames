@@ -3,6 +3,8 @@
 
 #include <tlhelp32.h>
 
+#include <tuple>
+
 using namespace std;
 
 
@@ -27,6 +29,37 @@ DWORD GetRemoteModuleBase(DWORD pid, const wstring& moduleName)
 
 	CloseHandle(snapshot);
 	return moduleBase;
+}
+
+// 寻找含有字符串的窗口
+HWND FindWindowContainsString(LPCTSTR className, LPCTSTR title)
+{
+	HWND result = NULL;
+	auto _param = tie(className, title, result);
+
+	EnumWindows([](HWND hwnd, LPARAM pParam)->BOOL {
+		auto& param = *(decltype(_param)*)pParam;
+		TCHAR buffer[1024];
+
+		if (get<0>(param) != NULL)
+		{
+			GetClassName(hwnd, buffer, _countof(buffer));
+			if (_tcsstr(buffer, get<0>(param)) == NULL)
+				return TRUE;
+		}
+
+		if (get<1>(param) != NULL)
+		{
+			GetWindowText(hwnd, buffer, _countof(buffer));
+			if (_tcsstr(buffer, get<1>(param)) == NULL)
+				return TRUE;
+		}
+
+		get<2>(param) = hwnd;
+		return FALSE;
+	}, (LPARAM)&_param);
+
+	return result;
 }
 
 // 取窗口DPI缩放系数

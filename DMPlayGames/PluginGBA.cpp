@@ -20,7 +20,7 @@ PluginGBA::PluginGBA()
 
 bool PluginGBA::Start()
 {
-	m_gameWindow = FindWindow(_T("Afx:400000:0:0:900011:16060b"), NULL);
+	m_gameWindow = FindWindowContainsString(NULL, _T("VisualBoyAdvance"));
 	if (m_gameWindow == NULL)
 	{
 		MessageBox(NULL, _T("找不到游戏窗口"), _T("弹幕玩游戏"), MB_ICONERROR);

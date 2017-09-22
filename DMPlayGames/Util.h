@@ -14,6 +14,9 @@ struct HANDLEDeleter
 // 取其他进程的模块基址
 DWORD GetRemoteModuleBase(DWORD pid, const std::wstring& moduleName);
 
+// 寻找含有字符串的窗口
+HWND FindWindowContainsString(LPCTSTR className, LPCTSTR title);
+
 // 取窗口DPI缩放系数
 float GetZoomScale(HWND hwnd);
 
